@@ -1,6 +1,9 @@
 import { Hono } from "hono"
 import "./db/connection"
 import { usersRouter } from "./app/users/users.router"
+import type { HTTPResponseError } from "hono/types"
+import type { HTTPExceptionFunction } from "hono/timeout"
+import { HTTPException } from "hono/http-exception"
 
 const app = new Hono({ strict: true })
 
@@ -13,8 +16,11 @@ app.notFound((c) => {
 })
 
 app.onError((err, c) => {
-  console.error(`${err}`)
-  return c.text("Custom Error Message", 500)
+  if (err instanceof HTTPException) {
+    c.status(err.status)
+    console.log(err.status)
+  }
+  return c.text(err.message)
 })
 
 export default app
