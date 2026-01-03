@@ -5,12 +5,16 @@ import factory from "../../factory"
 import { HTTPException } from "hono/http-exception"
 import getUserSchema from "../schemas/getUser.schema"
 import validate from "../../middlewares/validate.middleware"
+import mockAuthMiddleware from "../../middlewares/mockAuth.middleware"
 
 // "/users/:id"
 
 const getUserController = factory.createHandlers(
   validate("param", getUserSchema),
+  mockAuthMiddleware,
   async (c) => {
+    console.log(c.get("mockAuthData"))
+
     const { id } = c.req.valid("param")
 
     try {
