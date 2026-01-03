@@ -1,4 +1,4 @@
-import { prettifyError, type z, ZodError, type ZodType } from "zod/v4"
+import { prettifyError, ZodError, type ZodType } from "zod/v4"
 import { validator } from "hono/validator"
 
 type CustomValidationTargets = "query" | "param"
